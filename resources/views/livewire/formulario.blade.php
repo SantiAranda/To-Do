@@ -7,6 +7,8 @@
                 </x-label>
 
                 <x-input class="w-full" wire:model="title"/>
+
+                <x-input-error for="title"/>
             </div>
             
 
@@ -16,6 +18,8 @@
                 </x-label>
 
                 <x-textarea class="w-full resize-none" wire:model="content"></x-textarea>
+
+                <x-input-error for="content"/>
             </div>
 
             <div class="mb-4">
@@ -32,6 +36,8 @@
                         <option value="{{ $category->id }}">{{ $category->name }}</option>
                     @endforeach
                 </x-select>
+
+                <x-input-error for="category_id"/>
             </div>
 
             <div class="mb-4">
@@ -48,6 +54,8 @@
                         </li>
                     @endforeach
                 </ul>
+
+                <x-input-error for="selectedTags"/>
             </div>
 
             <div class="flex justify-end">
@@ -69,7 +77,7 @@
                             Editar
                         </x-button>
     
-                        <x-danger-button>
+                        <x-danger-button wire:click="destroy({{$post->id}})">
                             Eliminar
                         </x-danger-button>
                     </div>
@@ -79,74 +87,74 @@
     </div>
 
     {{-- Formulario de edicion --}}
-    @if ($modal)
-        <div class="bg-gray-900 bg-opacity-50 fixed inset-0">
-            <div class="py-12">
-                <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
-                    <div class="bg-gray-800 shadow rounded-lg p-6">
-                        <form wire:submit="update">
-                            <div class="mb-4">
-                                <x-label>
-                                    Nombre
-                                </x-label>
-                
-                                <x-input class="w-full" wire:model="postEdit.title"/>
-                            </div>
-                            
-                
-                            <div class="mb-4">
-                                <x-label>
-                                    Contenido
-                                </x-label>
-                
-                                <x-textarea class="w-full resize-none" wire:model="postEdit.content"></x-textarea>
-                            </div>
-                
-                            <div class="mb-4">
-                                <x-label>
-                                    Categoria
-                                </x-label>
-                
-                                <x-select class="w-full" wire:model="postEdit.category_id">
-                                    <option hidden>
-                                        Seleccione una categoría
-                                    </option>
-                
-                                    @foreach ($categories as $category)
-                                        <option value="{{ $category->id }}">{{ $category->name }}</option>
-                                    @endforeach
-                                </x-select>
-                            </div>
-                
-                            <div class="mb-4">
-                                <x-label>
-                                    Etiquetas
-                                </x-label>
-                
-                                <ul>
-                                    @foreach ($tags as $tag)
-                                        <li>
-                                            <x-label>
-                                                <x-checkbox type="checkbox" wire:model="postEdit.tags" value="{{$tag->id}}"/> {{$tag->name}}
-                                            </x-label>
-                                        </li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                
-                            <div class="flex justify-end space-x-2">
-                                <x-danger-button wire:click="$set('modal', false)">
-                                    Cancelar
-                                </x-danger-button>
+    <form wire:submit="update">
+        <x-dialog-modal wire:model="modal">
+            <x-slot name="title">
+                Actualizar Post
+            </x-slot>
 
-                                <x-button>
-                                    Actualizar
-                                </x-button>
-                            </div>
-                        </form>
-                    </div>
+            <x-slot name="content">
+                <div class="mb-4">
+                    <x-label>
+                        Nombre
+                    </x-label>
+    
+                    <x-input class="w-full" wire:model="postEdit.title"/>
                 </div>
-            </div>
-        </div> 
-    @endif
+                
+    
+                <div class="mb-4">
+                    <x-label>
+                        Contenido
+                    </x-label>
+    
+                    <x-textarea class="w-full resize-none" wire:model="postEdit.content"></x-textarea>
+                </div>
+    
+                <div class="mb-4">
+                    <x-label>
+                        Categoria
+                    </x-label>
+    
+                    <x-select class="w-full" wire:model="postEdit.category_id">
+                        <option hidden>
+                            Seleccione una categoría
+                        </option>
+    
+                        @foreach ($categories as $category)
+                            <option value="{{ $category->id }}">{{ $category->name }}</option>
+                        @endforeach
+                    </x-select>
+                </div>
+    
+                <div class="mb-4">
+                    <x-label>
+                        Etiquetas
+                    </x-label>
+    
+                    <ul>
+                        @foreach ($tags as $tag)
+                            <li>
+                                <x-label>
+                                    <x-checkbox type="checkbox" wire:model="postEdit.tags" value="{{$tag->id}}"/> {{$tag->name}}
+                                </x-label>
+                            </li>
+                        @endforeach
+                    </ul>
+                </div>
+            </x-slot>
+
+            <x-slot name="footer">
+                <div class="flex justify-end space-x-2">
+                    <x-danger-button wire:click="$set('modal', false)">
+                        Cancelar
+                    </x-danger-button>
+
+                    <x-button>
+                        Actualizar
+                    </x-button>
+                </div>
+            </x-slot>
+        </x-dialog-modal>
+    </form>
 </div>

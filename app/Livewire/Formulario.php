@@ -37,6 +37,13 @@ class Formulario extends Component
 
     public function save()
     {
+        $this->validate([
+            'title' => 'required',
+            'content' => 'required',
+            'category_id' => 'required|exists:categories,id',
+            'selectedTags' => 'required|array|min:1'
+        ]);
+
         $post = Post::create(
             $this->only('category_id', 'title', 'content')
         );
@@ -44,6 +51,15 @@ class Formulario extends Component
         $post->tags()->attach($this->selectedTags);
 
         $this->reset(['category_id', 'title', 'content', 'selectedTags']);
+
+        $this->posts = Post::all();
+    }
+
+    public function destroy($postId)
+    {
+        $post = Post::find($postId);
+
+        $post->delete();
 
         $this->posts = Post::all();
     }
