@@ -6,20 +6,19 @@
                     Nombre
                 </x-label>
 
-                <x-input class="w-full" wire:model="title"/>
+                <x-input class="w-full" wire:model.live="postCreate.title"/>
 
-                <x-input-error for="title"/>
+                <x-input-error for="postCreate.title"/>
             </div>
-            
 
             <div class="mb-4">
                 <x-label>
                     Contenido
                 </x-label>
 
-                <x-textarea class="w-full resize-none" wire:model="content"></x-textarea>
+                <x-textarea class="w-full resize-none" wire:model.live="postCreate.content"></x-textarea>
 
-                <x-input-error for="content"/>
+                <x-input-error for="postCreate.content"/>
             </div>
 
             <div class="mb-4">
@@ -27,7 +26,7 @@
                     Categoria
                 </x-label>
 
-                <x-select class="w-full" wire:model="category_id">
+                <x-select class="w-full" wire:model.live="postCreate.category_id">
                     <option hidden>
                         Seleccione una categoría
                     </option>
@@ -37,7 +36,7 @@
                     @endforeach
                 </x-select>
 
-                <x-input-error for="category_id"/>
+                <x-input-error for="postCreate.category_id"/>
             </div>
 
             <div class="mb-4">
@@ -49,13 +48,13 @@
                     @foreach ($tags as $tag)
                         <li>
                             <x-label>
-                                <x-checkbox type="checkbox" wire:model="selectedTags" value="{{$tag->id}}"/> {{$tag->name}}
+                                <x-checkbox type="checkbox" wire:model="postCreate.tags" value="{{$tag->id}}"/> {{$tag->name}}
                             </x-label>
                         </li>
                     @endforeach
                 </ul>
 
-                <x-input-error for="selectedTags"/>
+                <x-input-error for="postCreate.tags"/>
             </div>
 
             <div class="flex justify-end">
@@ -88,7 +87,7 @@
 
     {{-- Formulario de edicion --}}
     <form wire:submit="update">
-        <x-dialog-modal wire:model="modal">
+        <x-dialog-modal wire:model="postEdit.modal">
             <x-slot name="title">
                 Actualizar Post
             </x-slot>
@@ -100,6 +99,8 @@
                     </x-label>
     
                     <x-input class="w-full" wire:model="postEdit.title"/>
+
+                    <x-input-error for="postEdit.title"/>
                 </div>
                 
     
@@ -109,6 +110,8 @@
                     </x-label>
     
                     <x-textarea class="w-full resize-none" wire:model="postEdit.content"></x-textarea>
+
+                    <x-input-error for="postEdit.content"/>
                 </div>
     
                 <div class="mb-4">
@@ -125,6 +128,8 @@
                             <option value="{{ $category->id }}">{{ $category->name }}</option>
                         @endforeach
                     </x-select>
+
+                    <x-input-error for="postEdit.category_id"/>
                 </div>
     
                 <div class="mb-4">
@@ -141,6 +146,8 @@
                             </li>
                         @endforeach
                     </ul>
+
+                    <x-input-error for="postEdit.tags"/>
                 </div>
             </x-slot>
 
@@ -157,4 +164,13 @@
             </x-slot>
         </x-dialog-modal>
     </form>
+
+    @push('js')
+        <script>
+            Livewire.on('post-event', function(message) {
+                console.log(message[0])
+            });
+        </script>
+    @endpush
+
 </div>

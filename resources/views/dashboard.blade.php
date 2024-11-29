@@ -17,7 +17,13 @@
 
             {{-- @livewire('paises') --}}
 
-            @livewire('formulario')
+            {{-- @livewire('formulario') --}}
+
+            {{-- <div class="mt-4">
+                @livewire('comments')
+            </div> --}}
+
+            @livewire('father')
         </div>
     </div>
 </x-app-layout>
